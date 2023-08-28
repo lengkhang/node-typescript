@@ -6,10 +6,15 @@ import { itemsRouter } from './items/items.router';
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import mongoDbBootstrap from './bootstrap/mongodbBootstrap';
+import postgresqlBootstrap from './bootstrap/postgresqlBootstrap';
+import seedPostgresql from './fixtures/seedPostgresql';
 
 dotenv.config();
 
 (async () => {
+  const postgresqlConnection = await postgresqlBootstrap();
+  // await seedPostgresql(postgresqlConnection);
+
   const app: Express = express();
 
   await mongoDbBootstrap(process.env.MONGO_DB_URI);

@@ -2,36 +2,41 @@ import { BaseItem, Item } from "./item.interface";
 import { Items } from "./items.interface";
 import ItemModel from './models/item';
 
-let items: Items = {
-  1: {
-    id: 1,
-    name: "Burger",
-    price: 599,
-    description: "Tasty",
-    image: "https://cdn.auth0.com/blog/whatabyte/burger-sm.png"
-  },
-  2: {
-    id: 2,
-    name: "Pizza",
-    price: 299,
-    description: "Cheesy",
-    image: "https://cdn.auth0.com/blog/whatabyte/pizza-sm.png"
-  },
-  3: {
-    id: 3,
-    name: "Tea",
-    price: 199,
-    description: "Informative",
-    image: "https://cdn.auth0.com/blog/whatabyte/tea-sm.png"
-  }
-};
+// let items: Items = {
+//   1: {
+//     id: 1,
+//     name: "Burger",
+//     price: 599,
+//     description: "Tasty",
+//     image: "https://cdn.auth0.com/blog/whatabyte/burger-sm.png"
+//   },
+//   2: {
+//     id: 2,
+//     name: "Pizza",
+//     price: 299,
+//     description: "Cheesy",
+//     image: "https://cdn.auth0.com/blog/whatabyte/pizza-sm.png"
+//   },
+//   3: {
+//     id: 3,
+//     name: "Tea",
+//     price: 199,
+//     description: "Informative",
+//     image: "https://cdn.auth0.com/blog/whatabyte/tea-sm.png"
+//   }
+// };
 
 // export const findAll = async (): Promise<Items> => Object.values(items);
+// export const findAll = async ({ pageSize = 10, pageNo = 1} = {}): Promise<Items> => {
+//   return ItemModel
+//     .find()
+//     .limit(pageSize)
+//     .skip(pageSize * (pageNo - 1));
+// };
 export const findAll = async ({ pageSize = 10, pageNo = 1} = {}): Promise<Items> => {
-  return ItemModel
-    .find()
-    .limit(pageSize)
-    .skip(pageSize * (pageNo - 1));
+  const items = await process.postgresql.query('SELECT * FROM item');
+
+  return items;
 };
 
 // export const find = async (id: number): Promise<Item> => items[id];
