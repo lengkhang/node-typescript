@@ -4,6 +4,7 @@
 import express, { Request, Response } from "express";
 import * as ItemService from "./items.service";
 import { BaseItem, Item } from "./item.interface";
+import Joi from 'joi';
 
 /**
  * Router Definition
@@ -45,7 +46,21 @@ itemsRouter.get('/:id', async (req: Request, res: Response) => {
 // POST items
 itemsRouter.post('/', async (req: Request, res: Response) => {
   try {
-    const item: BaseItem = req.body;
+    const schema = Joi.object({
+      name: Joi.string().required(),
+      price: Joi.number().required(),
+      description: Joi.string().required(),
+      image: Joi.string().required()
+    });
+
+    const { value, error } = schema.validate(req.body);
+
+    if (error) {
+      res.status(400).send(error.message);
+      return;
+    }
+
+    const item: BaseItem = value;
 
     const createdItem = await ItemService.create(item);
 
